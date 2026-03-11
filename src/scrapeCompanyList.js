@@ -56,3 +56,38 @@ export async function scrapeCompanyList(page, baseUrl, maxCompanies) {
 
   return companyUrls;
 }
+
+/**
+ * Identifies the total number of companies by looking at pagination.
+ */
+export async function getTotalCompanyCount(page, baseUrl) {
+  try {
+    const listingUrl = `${baseUrl}/en/companies/`;
+    await page.goto(listingUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    
+    // Wait for pagination or content
+    await page.waitForSelector('.pagination, .company-index__result', { timeout: 15000 });
+
+    const total = await page.evaluate(() => {
+      const paginationItems = document.querySelectorAll('.pagination .page-item');
+      if (paginationItems.length === 0) return 24; // If no pagination, assume at least 1 page
+
+      // Find the last numerical page link
+      let maxPage = 1;
+      paginationItems.forEach(item => {
+        const pageNum = parseInt(item.innerText.trim());
+        if (!isNaN(pageNum) && pageNum > maxPage) {
+          maxPage = pageNum;
+        }
+      });
+
+      // Usually 24 items per page on this site
+      return maxPage * 24; 
+    });
+
+    return total;
+  } catch (err) {
+    console.error('  ⚠️ Could not determine total count automatically. Using fallback.');
+    return 20000; // Fallback based on intro text
+  }
+}
