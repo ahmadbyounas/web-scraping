@@ -1,0 +1,25 @@
+{
+  "name": "web-scrapping",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "web-scraping",
+    "puppeteer",
+    "csv"
+  ],
+  "author": "",
+  "license": "ISC",
+  "description": "Web scraper for Business & Human Rights Resource Centre companies data",
+  "dependencies": {
+    "csv-writer": "^1.6.0",
+    "fs-extra": "^11.2.0",
+    "puppeteer": "^22.0.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
+  }
+}
